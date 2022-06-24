@@ -15,7 +15,7 @@ type UserProcess struct {
 }
 
 func (this *UserProcess) NotifyOthersOnlineUser(userId int) {
-	for id, up := range this.oineUsernls {
+	for id, up := range userMgr.onlineUsers {
 		if id == userId {
 			continue
 		}

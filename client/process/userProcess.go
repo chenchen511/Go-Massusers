@@ -120,6 +120,10 @@ func (this *UserProcess) Login(userId int, userPwd string) (err error) {
 	var loginResMes message.LoginResMes
 	err = json.Unmarshal([]byte(mes.Data), &loginResMes)
 	if loginResMes.Code == 200 {
+		//初始化
+		CurUser.Conn = conn
+		CurUser.UserId = userId
+		CurUser.UserStatus = message.UserOnline
 		//	fmt.Println("登录成功")
 		fmt.Println("当前在线用户列表如下：")
 		for _, v := range loginResMes.UsersId {
@@ -127,6 +131,12 @@ func (this *UserProcess) Login(userId int, userPwd string) (err error) {
 				continue
 			}
 			fmt.Println("用户ID", v)
+			user := &message.User{
+				UserId:     v,
+				UserStatus: message.UserOnline,
+			}
+			onlineUsers[v] = user
+
 		}
 		go serverProcessMes(conn)
 		for {
